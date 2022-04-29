@@ -1,0 +1,21 @@
+#! /usr/bin/env node
+
+// console.log('yi-cli~~~') //npm link
+
+// 1 配置可执行命令 commander
+const program = require('commander')
+
+program
+    .version(`zhufeng-cli@${require('../package.json').version}`)
+    .usage(`<command> [option]`)
+
+program.parse(process.argv)
+
+// 2 实现脚手架 先做一个命令行交互功能 inquirer
+
+// 3 将模板下载 donwload-git-repo
+
+// 4 根据用户的选择动态的生成内容 metalsmith
+
+
+

@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>时钟</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            height: 100vh;
+            width: 100vw;
+            position: relative;
+            color: #fff;
+            font-weight: 300;
+            background: #000;
+            user-select: none;
+        }
+    </style>
+
+    <link rel="stylesheet" href="./index.css">
+</head>
+
+<body>
+    <div id="app" class="container">
+        <div class="miao" :style="{ transform: `rotate(${-6*getSeconds}deg)` }">
+            <div class="miao-item"
+                :style="{ transform: `rotate(${6*index}deg) translate(-50%, -50%)` }" v-for="(item, index) in 60">
+                <span :class="{ sign: getSeconds==index }">{{ dictionaries[item] }}秒</span>
+            </div>
+        </div>
+
+        <div class="fen" :style="{ transform: `rotate(${-6*getMinutes}deg)` }">
+            <div class="fen-item"
+            :style="{ transform: `rotate(${6*index}deg) translate(-50%, -50%)` }" v-for="(item, index) in 60">
+            <span :class="{ sign: getMinutes==index }">{{ dictionaries[index] }}分</span></div>
+        </div>
+
+        <div class="xiaoshi" :style="{ transform: `rotate(${-15*getHours}deg)` }">
+            <div class="xiaoshi-item"
+            :style="{ transform: `rotate(${15*index}deg) translate(-50%, -50%)` }" v-for="(item, index) in 24">
+            <span :class="{ sign: getHours==index }">{{ dictionaries[index] }}点</span></div>
+        </div>
+
+        <div class="hao" :style="{ transform: `rotate(${-12*getDate}deg)` }">
+            <div class="hao-item"
+            :style="{ transform: `rotate(${12*index}deg) translate(-50%, -50%)` }" v-for="(item, index) in 30">
+            <span :class="{ sign: getDate==index }">{{ dictionaries[index] }}号</span></div>
+        </div>
+
+        <div class="yue" :style="{ transform: `rotate(${-30*getMonth}deg)` }">
+            <div class="yue-item"
+                :style="{ transform: `rotate(${30*index}deg) translate(-50%, -50%)` }" v-for="(item, index) in 12">
+                <span :class="{ sign: getMonth==index }" >{{ dictionaries[item] }}月</span>
+            </div>
+        </div>
+
+        <div class="kezhong" :style="{ transform: `rotate(${-15*(getHours)}deg)` }">
+            <div class="kezhong-item"
+                :style="{ transform: `rotate(${15*index}deg) translate(-50%, -50%)` }" v-for="(item, index) in ancient">
+                <span :class="{ sign: ancients[getHours]==item }">{{ item }}</span>
+            </div>
+        </div>
+
+        <div class="xingqi" :style="{ transform: `rotate(${-51.42857*getDay}deg)` }">
+            <div class="xingqi-item"
+                :style="{ transform: `rotate(${51.42857*index}deg) translate(-50%, -50%)` }" v-for="(item, index) in 7">
+                <span :class="{ sign: getDay==index }" >星期{{ dictionaries[getDay] }}</span>
+            </div>
+        </div>
+
+        <div class="nian sign">
+            {{ strYear }}年
+        </div>
+    </div>
+</body>
+
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+
+<script>
+    new Vue({
+        el: '#app',
+        data: {
+            strYear: ``,
+            dictionaries: {},
+            // 从1开始
+            ancient:['','丑时','','寅时','','卯时','','辰时','','巳时','',
+            '午时','','未时','','申时','','酉时','','戌时','','亥时','','子时'],
+            ancients: {
+                1: '丑时',
+                2: '丑时',
+                3: '寅时',
+                4: '寅时',
+                5: '卯时',
+                6: '卯时',
+                7: '辰时',
+                8: '辰时',
+                9: '巳时',
+                10: '巳时',
+                11: '午时',
+                12: '午时',
+                13: '未时',
+                14: '未时',
+                15: '申时',
+                16: '申时',
+                17: '酉时',
+                18: '酉时',
+                19: '戌时',
+                20: '戌时',
+                21: '亥时',
+                22: '亥时',
+                23: '子时',
+                0: '子时'
+            },
+            dictionaries: {
+                0: '零',
+                1: '壹',
+                2: '二',
+                3: '三',
+                4: '四',
+                5: '五',
+                6: '六',
+                7: '七',
+                8: '八',
+                9: '九',
+                10: '十',
+                11: '十壹',
+                12: '十二',
+                13: '十三',
+                14: '十四',
+                15: '十五',
+                16: '十六',
+                17: '十七',
+                18: '十八',
+                19: '十九',
+                20: '二十',
+                21: '二十壹',
+                22: '二十二',
+                23: '二十三',
+                24: '二十四',
+                25: '二十五',
+                26: '二十六',
+                27: '二十七',
+                28: '二十八',
+                29: '二十九',
+                30: '三十',
+                31: '三十壹',
+                32: '三十二',
+                33: '三十三',
+                34: '三十四',
+                35: '三十五',
+                36: '三十六',
+                37: '三十七',
+                38: '三十八',
+                39: '三十九',
+                40: '四十',
+                41: '四十壹',
+                42: '四十二',
+                43: '四十三',
+                44: '四十四',
+                45: '四十五',
+                46: '四十六',
+                47:'四十七',
+                48: '四十八',
+                49: '四十九',
+                50: '五十',
+                51: '五十壹',
+                52: '五十二',
+                53: '五十三',
+                54: '五十四',
+                55: '五十五',
+                56: '五十六',
+                57: '五十七',
+                58: '五十八',
+                59: '五十九',
+                60: '六十'
+            },
+            getMonth: 0,
+            getDate: 0,
+            getHours: 0,
+            getMinutes: 0,
+            getDay: 0,
+            getSeconds: 0,
+            timer: null
+        },
+        mounted() {
+            this.render();
+            let timer = setInterval(()=> {
+                this.render();
+            },1000);
+        },
+
+        methods: {
+            render() {
+                let dictionaries = this.dictionaries;
+                let date = new Date();
+                let strYear = ``;
+                let getFullYear = date.getFullYear(); //获取当前年份
+                `${getFullYear}`.split('').map(item => {
+                    strYear+=dictionaries[item]
+                });
+                this.strYear = strYear;
+
+                let getMonth = date.getMonth(); // 获取当前月份(0-11,0代表1月)
+                this.getMonth = getMonth;
+
+                let getDate = date.getDate(); // 获取当前几号
+                this.getDate = getDate;
+
+                let getDay = date.getDay(); // 获取当前星期X(0-6,0代表星期天)
+                this.getDay = getDay;
+
+                let getHours = date.getHours();//获取当前小时数(0-23)
+                this.getHours = getHours;
+
+                let getMinutes = date.getMinutes(); //获取当前分钟数(0-59)
+                this.getMinutes = getMinutes;
+
+                let getSeconds = date.getSeconds(); //获取当前秒数(0-59)
+                this.getSeconds = getSeconds;
+            }
+        },
+        beforeDestroy() {
+            clearInterval(this.timer)
+        }
+    })
+</script>
+</html>

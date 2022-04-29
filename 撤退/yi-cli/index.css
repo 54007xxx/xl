@@ -1,0 +1,45 @@
+.nian, .yue, .hao, .miao,.xiaoshi,.fen,.xingqi,.kezhong {
+    position: absolute;
+    left: 50%;top: 50%;
+    transform: translate(-50%, -50%);
+    transition: all .2s;
+}
+
+.fen-item,.yue-item,.hao-item,.xiaoshi-item,.miao-item,.xingqi-item,.kezhong-item {
+    position: absolute;
+    width: 100px;
+    left: 50%;top: 50%;
+    transform-origin: 0 0;
+}
+
+.yue-item {
+    padding-left: 280px;
+}
+
+.xingqi-item {
+    padding-left: 580px;
+}
+
+.hao-item {
+    padding-left: 440px;
+}
+
+.kezhong-item {
+    padding-left: 690px;
+}
+
+.xiaoshi-item {
+    padding-left: 780px;
+}
+
+.fen-item {
+    padding-left: 930px;
+}
+
+.miao-item {
+    padding-left: 1100px;
+}
+
+.sign {
+    color: #f00;
+}

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>聊天室</title>
+    <style>
+        .user {
+            color: #f00;
+        }
+    </style>
+</head>
+
+<body>
+    <div>
+        <div>欢迎来到聊天室</div>
+        <button id="joinRed" style="display: inline-block;" onclick="join('Red')">进入红房间</button>
+        <button id="leaveRed" style="display: none;" onclick="leave('Red')">离开红房间</button>
+        <!-- <button id="joinGreen">进入绿房间</button><button id="leaveGreen">离开绿房间</button> -->
+
+        <div id="chat" onclick="clickUser(event)"></div>
+        <input type="text" id="content">
+        <button onClick="sendClick()">发送</button>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://cdn.bootcss.com/moment.js/2.24.0/moment.js"></script>
+    <script src="https://cdn.bootcss.com/moment.js/2.24.0/locale/zh-cn.js"></script>
+
+    <script>
+        let socket = io.connect('/')//命名空间
+        let $content = document.getElementById('content')
+        let $chat = document.getElementById('chat')
+
+        socket.on('connect', function () {
+            // console.log('连接成功')
+            // socket.send('--')
+            socket.emit('getAllMessages');
+        })
+
+        socket.on('allMessages', async function (messages) {
+            // console.log('连接成功')
+            // socket.send('--')
+            let html = messages.map(msgObj => `<li><span class="user">${msgObj.username}</span>:${msgObj.content}------${moment(msgObj.createAt).fromNow()}</li>`).join();
+            $chat.innerHTML = html
+        })
+
+        socket.on('message', function (msgObj) {
+            let li = document.createElement('li')
+            li.innerHTML = `<span class="user">${msgObj.username}</span>:${msgObj.content}------${moment(msgObj.createAt).fromNow()}`
+            $chat.appendChild(li)
+        })
+
+        socket.on('disconnect', function () {
+            console.log('断开连接')
+        })
+
+        function sendClick() {
+            let text = $content.value
+            socket.send(text)
+        }
+
+        function clickUser(event) {
+            if (event.target.className == 'user') {
+                $content.value = `@${event.target.innerText} `
+            }
+        }
+
+        function join(roomName) {
+            socket.emit('join', roomName)
+        }
+
+        socket.on('joined', function(roomName) {
+            let $roomJoin = document.getElementById(`join${roomName}`)
+            let $roomLeave = document.getElementById(`leave${roomName}`)
+            $roomJoin.style.display = "none"
+            $roomLeave.style.display = "inline-block"
+        })
+
+        function leave(roomName) {
+            socket.emit('leave', roomName)
+        }
+
+        socket.on('leaved', function(roomName) {
+            let $roomJoin = document.getElementById(`join${roomName}`)
+            let $roomLeave = document.getElementById(`leave${roomName}`)
+            $roomJoin.style.display = "inline-block"
+            $roomLeave.style.display = "none"
+        })
+
+    </script>
+
+</body>
+
+</html>
